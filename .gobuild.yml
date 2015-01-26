@@ -1,0 +1,12 @@
+author: matt@sivel.net
+filesets:
+    includes:
+        - README.md
+        - LICENSE
+    excludes:
+        - \.git
+settings:
+    build: |
+        go install github.com/GeertJohan/go.rice && rice embed-go && go build
+    outfiles:
+        - spinclass

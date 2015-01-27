@@ -16,3 +16,12 @@ type Config struct {
 		FlavorRef        string `yaml:"flavor"`
 	}
 }
+
+type SpinUp struct {
+	Prefix    string   `json:"prefix"`
+	ServerIDs []string `json:"server_ids"`
+}
+
+type Odometer struct {
+	Instances map[string]interface{} `json:"instances"`
+}

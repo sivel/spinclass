@@ -182,9 +182,11 @@
 					$('.stats span').text(0);
 					$('.stats').addClass('hide');
 					clearInterval(odometer_id);
-					clock.stop();
 					clock.setCountdown(true);
-					clock.start();
+					clock.time.addSeconds(-1);
+					if ( ! clock.running ) {
+						clock.start();
+					}
 					$.post("/spin/down", {prefix: prefix}, function(data) {
 						odometer_down_id = setInterval(odometer_down, 1000);
 					});

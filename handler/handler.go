@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/GeertJohan/go.rice"
 	"github.com/gorilla/mux"
 	"github.com/mholt/binding"
 	"github.com/sivel/spinclass/common"
@@ -15,11 +14,10 @@ import (
 )
 
 type Handler struct {
-	Router    *mux.Router
-	Config    common.Config
-	Templates *rice.Box
-	Class     spin.Class
-	Roster    common.RosterType
+	Router *mux.Router
+	Config common.Config
+	Class  spin.Class
+	Roster common.RosterType
 }
 
 func (h *Handler) SpinUp(w http.ResponseWriter, req *http.Request) {

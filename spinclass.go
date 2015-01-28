@@ -53,13 +53,6 @@ func main() {
 
 	h.Class.Create()
 
-	templateBox, err := rice.FindBox("templates")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	h.Templates = templateBox
-
 	loggingHandler := handlers.CombinedLoggingHandler(os.Stdout, router)
 
 	box := rice.MustFindBox("static")

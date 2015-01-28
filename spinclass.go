@@ -62,7 +62,8 @@ func main() {
 
 	loggingHandler := handlers.CombinedLoggingHandler(os.Stdout, router)
 
-	router.HandleFunc("/", h.Index)
+	box := rice.MustFindBox("static")
+	router.PathPrefix("/").Handler(http.FileServer(box.HTTPBox()))
 	router.HandleFunc("/spin/up", h.SpinUp).Methods("POST")
 	router.HandleFunc("/spin/down", h.SpinDown).Methods("POST")
 	router.HandleFunc("/odometer", h.Odometer).Methods("POST")

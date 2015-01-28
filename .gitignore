@@ -1,7 +1,7 @@
 spinclass
 spinclass.zip
 spinclass.yaml
-templates.rice-box.go
+static.rice-box.go
 
 # Compiled Object files, Static and Dynamic libs (Shared Objects)
 *.o

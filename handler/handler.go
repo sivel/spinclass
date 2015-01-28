@@ -3,9 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
-	"text/template"
 
 	"github.com/GeertJohan/go.rice"
 	"github.com/gorilla/mux"
@@ -22,18 +20,6 @@ type Handler struct {
 	Templates *rice.Box
 	Class     spin.Class
 	Roster    common.RosterType
-}
-
-func (h *Handler) Index(w http.ResponseWriter, req *http.Request) {
-	templateString, err := h.Templates.String("index.tmpl")
-	if err != nil {
-		log.Fatal(err)
-	}
-	tmplMessage, err := template.New("index").Parse(templateString)
-	if err != nil {
-		log.Fatal(err)
-	}
-	tmplMessage.Execute(w, nil)
 }
 
 func (h *Handler) SpinUp(w http.ResponseWriter, req *http.Request) {

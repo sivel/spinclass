@@ -42,6 +42,7 @@ func (c *Class) create(co chan<- string, wg *sync.WaitGroup, prefix string, coun
 		ImageRef:  c.Config.OpenStack.ImageRef,
 		FlavorRef: c.Config.OpenStack.FlavorRef,
 	}).Extract()
+	server.AdminPass = ""
 	c.Roster[prefix][server.ID] = server
 	co <- server.ID
 }

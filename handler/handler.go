@@ -6,9 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/mholt/binding"
 	"github.com/sivel/spinclass/common"
-	"github.com/sivel/spinclass/forms"
 	"github.com/sivel/spinclass/spin"
 	"github.com/sivel/spinclass/utils"
 )
@@ -20,13 +18,25 @@ type Handler struct {
 	Roster common.RosterType
 }
 
+type CountStruct struct {
+	Count int `json:"count"`
+}
+
+type PrefixStruct struct {
+	Prefix string `json:"prefix"`
+}
+
 func (h *Handler) SpinUp(w http.ResponseWriter, req *http.Request) {
 	spinUp := common.SpinUp{
 		Prefix: fmt.Sprintf("spinclass-%s", utils.RandStr(8)),
 	}
-	countForm := new(forms.CountForm)
-	binding.Bind(req, countForm)
-	serverIDs := h.Class.New(countForm.Count, spinUp.Prefix)
+
+	decoder := json.NewDecoder(req.Body)
+	decoder.UseNumber()
+	var count CountStruct
+	decoder.Decode(&count)
+
+	serverIDs := h.Class.New(count.Count, spinUp.Prefix)
 	spinUp.ServerIDs = serverIDs
 	output, _ := json.Marshal(spinUp)
 	w.Header().Set("Content-Type", "application/json")
@@ -34,17 +44,19 @@ func (h *Handler) SpinUp(w http.ResponseWriter, req *http.Request) {
 }
 
 func (h *Handler) SpinDown(w http.ResponseWriter, req *http.Request) {
-	prefixForm := new(forms.PrefixForm)
-	binding.Bind(req, prefixForm)
-	h.Class.Dismiss(prefixForm.Prefix)
+	decoder := json.NewDecoder(req.Body)
+	var prefix PrefixStruct
+	decoder.Decode(&prefix)
+	h.Class.Dismiss(prefix.Prefix)
 }
 
 func (h *Handler) Odometer(w http.ResponseWriter, req *http.Request) {
-	prefixForm := new(forms.PrefixForm)
-	binding.Bind(req, prefixForm)
+	decoder := json.NewDecoder(req.Body)
+	var prefix PrefixStruct
+	decoder.Decode(&prefix)
 
 	odometer := common.Odometer{
-		Instances: h.Roster[prefixForm.Prefix],
+		Instances: h.Roster[prefix.Prefix],
 	}
 	output, _ := json.Marshal(odometer)
 	w.Header().Set("Content-Type", "application/json")
@@ -52,7 +64,8 @@ func (h *Handler) Odometer(w http.ResponseWriter, req *http.Request) {
 }
 
 func (h *Handler) Final(w http.ResponseWriter, req *http.Request) {
-	prefixForm := new(forms.PrefixForm)
-	binding.Bind(req, prefixForm)
-	delete(h.Roster, prefixForm.Prefix)
+	decoder := json.NewDecoder(req.Body)
+	var prefix PrefixStruct
+	decoder.Decode(&prefix)
+	delete(h.Roster, prefix.Prefix)
 }

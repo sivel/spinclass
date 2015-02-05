@@ -68,16 +68,6 @@
 		return 'Building'
 	}
 
-	Spin.prototype.showStats = function() {
-		var _this = this;
-		if (_this.down === true) {
-			return false;
-		}
-		if (_this.prefix != "") {
-			return true;
-		}
-	}
-
 	Spin.prototype.percent = function(value) {
 		var _this = this;
 		if ( !_this.total || !value ) {

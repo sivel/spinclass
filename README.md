@@ -4,7 +4,7 @@ Demo app to spin up a specified number of OpenStack Compute instances, monitor a
 
 ## Install
 
-[![Gobuild Download](http://gobuild.io/badge/github.com/sivel/spinclass/download.png)](http://gobuild.io/github.com/sivel/spinclass)
+1. Download a binary from the most recent [release](https://github.com/sivel/spinclass/releases)
 
 ## Example Execution
 

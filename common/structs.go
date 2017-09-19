@@ -1,5 +1,9 @@
 package common
 
+import (
+	openstack "github.com/rackspace/gophercloud/openstack/compute/v2/servers"
+)
+
 type Config struct {
 	Server struct {
 		Port string
@@ -23,5 +27,5 @@ type SpinUp struct {
 }
 
 type Odometer struct {
-	Instances map[string]interface{} `json:"instances"`
+	Instances map[string]*openstack.Server `json:"instances"`
 }

@@ -52,11 +52,14 @@ func (c *Class) pedal(serverID string, prefix string, dismiss bool) {
 	for {
 		time.Sleep(5 * time.Second)
 		server, _ = servers.Get(c.computeClient, serverID).Extract()
-		c.Roster[prefix][serverID] = server
+		if server != nil {
+			c.Roster[prefix][serverID] = server
+		}
 
 		if dismiss == false && (server.Status == "ACTIVE" || server.Status == "ERROR") {
 			break
-		} else if dismiss == true && (server.Status == "" || server.Status == "DELETED" || server.Status == "ERROR") {
+		} else if dismiss == true && (server == nil || server.Status == "" || server.Status == "DELETED" || server.Status == "ERROR") {
+			c.Roster[prefix][serverID].Status = "DELETED"
 			break
 		}
 	}
@@ -75,7 +78,7 @@ func (c *Class) Dismiss(prefix string) {
 func (c *Class) New(count int, prefix string) []string {
 	var servers []string
 
-	c.Roster[prefix] = make(map[string]interface{})
+	c.Roster[prefix] = make(map[string]*openstack.Server)
 
 	co := make(chan string)
 	wg := new(sync.WaitGroup)
